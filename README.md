@@ -31,4 +31,3 @@ Aqui documento scripts, guias e ferramentas que uso ou ja usei em atendimentos r
 
 - LinkedIn: [linkedin.com/in/davisenise](https://linkedin.com/in/davisenise)
 - E-mail: onedavisc@gmail.com
-- Workana: [workana.com/freelancer/davisenise](https://www.workana.com/freelancer/davisenise)
