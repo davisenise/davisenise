@@ -6,8 +6,7 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
 ---
-
-## sobre
+# Davi Senise
 
 Trabalho com suporte técnico e logística no dia a dia, na prática:
 chamado, AD, M365, rede, hardware, usuário gritando que "não tá funcionando".
@@ -17,7 +16,7 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 
 ---
 
-## repos
+## Repos
 
 | repo | o que faz |
 |---|---|
@@ -27,9 +26,7 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 
 ---
 
-## stats
-
-## stats
+## Stats
 
 <p align="center">
   <img height="160" src="https://github-readme-stats.vercel.app/api?username=davisenise&show_icons=true&theme=highcontrast&hide_border=true&bg_color=00000000&icon_color=FF6B00&title_color=FF6B00&count_private=true" />
@@ -38,7 +35,7 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 
 ---
 
-## contato
+## Contato
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/davisenise)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/davisn.se)
