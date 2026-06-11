@@ -22,7 +22,7 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 |---|---|
 | [inventario-ti](https://github.com/davisenise/inventario-ti) | inventário automático de máquinas Windows com export pra Excel |
 | [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | checklists e scripts de manutenção/suporte Windows |
-| [limpeza-windows](https://github.com/davisenise/limpeza-windows) | limpeza automática de lixo do sistema + relatório |
+| [limpeza-usuario](https://github.com/davisenise/limpeza-usuario) | Script de limpeza focado no usuário logado + relatório |
 
 ---
 
