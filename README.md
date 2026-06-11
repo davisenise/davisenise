@@ -31,8 +31,8 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 ## Stats
 
 <p align="center">
-  <img height="160" src="https://github-readme-stats.vercel.app/api?username=davisenise&show_icons=true&theme=highcontrast&hide_border=true&bg_color=00000000&icon_color=FF6B00&title_color=FF6B00&count_private=true" />
-  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=davisenise&layout=compact&theme=highcontrast&hide_border=true&bg_color=00000000&title_color=FF6B00&langs_count=6" />
+  <img height="160" src="https://github-readme-stats.vercel.app/api?username=davisenise&show_icons=true&hide_border=true&bg_color=00000000&title_color=FF6B00&icon_color=FF6B00&text_color=111111&ring_color=FF6B00&locale=pt-br" />
+  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=davisenise&layout=compact&hide_border=true&bg_color=00000000&title_color=FF6B00&text_color=111111&langs_count=6" />
 </p>
 
 ---
