@@ -18,13 +18,13 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 
 ## Repos
 
-| repo | o que faz |
+| repo | what it does |
 |---|---|
-| [inventario-ti](https://github.com/davisenise/inventario-ti) | inventário automático de máquinas Windows com export pra Excel |
-| [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | checklists e scripts de manutenção/suporte Windows |
-| [limpeza-usuario](https://github.com/davisenise/limpeza-usuario) | Script de limpeza focado no usuário logado + relatório |
-| [central-ajuda](https://github.com/davisenise/central-ajuda) | Scripts de Central de ajuda (FAQ) feito para mobile em HTML/CSS/JS puro|
-| [flyer-integracao](https://github.com/davisenise/flyer-integracao) | Script de Gerador de flyer de integração com QR codes gerados no navegador, com painel personalizavel | 
+| [windows-inventory-tool](https://github.com/davisenise/windows-inventory-tool) | Automatic Windows machine inventory tool with data collection and Excel export |
+| [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | IT support toolkit with Windows optimization guides, maintenance checklists, and sysadmin scripts |
+| [user-cleanup-script](https://github.com/davisenise/user-cleanup-script) | PowerShell script to clean the logged-in user profile, remove temporary files, and generate a simple report |
+| [help-center](https://github.com/davisenise/help-center) | Mobile-friendly help center built with pure HTML, CSS, and JavaScript for FAQs, useful links, and internal support |
+| [integration-flyer-generator](https://github.com/davisenise/integration-flyer-generator) | Integration flyer generator with QR Code support, built with HTML, CSS, and JavaScript to run directly in the browser |
 
 ---
 
