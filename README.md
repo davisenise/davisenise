@@ -23,6 +23,8 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 | [inventario-ti](https://github.com/davisenise/inventario-ti) | inventário automático de máquinas Windows com export pra Excel |
 | [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | checklists e scripts de manutenção/suporte Windows |
 | [limpeza-usuario](https://github.com/davisenise/limpeza-usuario) | Script de limpeza focado no usuário logado + relatório |
+| [central-ajuda](https://github.com/davisenise/central-ajuda) | Scripts de Central de ajuda (FAQ) feito para mobile em HTML/CSS/JS puro|
+| [flyer-integracao](https://github.com/davisenise/flyer-integracao) | Script de Gerador de flyer de integração com QR codes gerados no navegador, com painel personalizavel | 
 
 ---
 
