@@ -29,6 +29,19 @@ Sem curso bonitinho, sem hello world. Coisa de chão de fábrica.
 
 ---
 
+## Repos
+
+| repo | what it does |
+|---|---|
+| [windows-inventory-tool](https://github.com/davisenise/windows-inventory-tool) | Automatic Windows machine inventory tool with data collection and Excel export |
+| [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | IT support toolkit with Windows optimization guides, maintenance checklists, and sysadmin scripts |
+| [user-cleanup-script](https://github.com/davisenise/user-cleanup-script) | PowerShell script to clean the logged-in user profile, remove temporary files, and generate a simple report |
+| [help-center](https://github.com/davisenise/help-center) | Mobile-friendly help center built with pure HTML, CSS, and JavaScript for FAQs, useful links, and internal support |
+| [integration-flyer-generator](https://github.com/davisenise/integration-flyer-generator) | Integration flyer generator with QR Code support, built with HTML, CSS, and JavaScript to run directly in the browser |
+| [hardware-report-generator](https://github.com/davisenise/hardware-report-generator) | PowerShell script that generates a visual HTML hardware inventory report |
+
+---
+
 ## Stats
 
 <p align="center">
