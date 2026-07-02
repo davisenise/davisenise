@@ -16,9 +16,9 @@ Aqui eu documento o que uso de verdade, scripts, checklists, guias.
 ---
 
 ## Repos
-
 | repo | what it does |
 |---|---|
+| [it-support-playbooks](https://github.com/davisenise/it-support-playbooks) | Collection of troubleshooting guides for recurring IT support issues (network, printers, Outlook, boot, VPN, Teams, permissions, endpoint performance) |
 | [windows-inventory-tool](https://github.com/davisenise/windows-inventory-tool) | Automatic Windows machine inventory tool with data collection and Excel export |
 | [windows-sysadmin-toolkit](https://github.com/davisenise/windows-sysadmin-toolkit) | IT support toolkit with Windows optimization guides, maintenance checklists, and sysadmin scripts |
 | [user-cleanup-script](https://github.com/davisenise/user-cleanup-script) | PowerShell script to clean the logged-in user profile, remove temporary files, and generate a simple report |
