@@ -9,9 +9,10 @@
 # Davi Senise
 
 Trabalho com suporte técnico e logística no dia a dia, na prática:
-chamado, AD, M365, rede, hardware, cliente gritando que "não tá funcionando".
+chamado, AD, M365, rede, hardware, usuario gritando que "não tá funcionando".
 
 Aqui eu documento o que uso de verdade, scripts, checklists, guias.
+
 ---
 
 ## Repos
