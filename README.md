@@ -6,16 +6,19 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
 ---
+
 # Davi Senise
 
-Trabalho com suporte técnico e logística no dia a dia, na prática:
-chamado, AD, M365, rede, hardware, usuario gritando que "não tá funcionando".
+Suporte técnico e logística no dia a dia. Chamado, AD, M365, rede, hardware, usuário gritando "não tá funcionando".
 
-Aqui eu documento o que uso de verdade, scripts, checklists, guias.
+Aqui documento o que uso de verdade: scripts, checklists, guias de troubleshooting.
+
+**Estudando agora:** Redes e Infraestrutura.
 
 ---
 
 ## Repos
+
 | repo | what it does |
 |---|---|
 | [it-support-playbooks](https://github.com/davisenise/it-support-playbooks) | Collection of troubleshooting guides for recurring IT support issues (network, printers, Outlook, boot, VPN, Teams, permissions, endpoint performance) |
