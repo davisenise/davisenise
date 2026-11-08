@@ -5,14 +5,16 @@ Artes do Instagram `@vertice.xy`, geradas por código no estilo cartaz xerox da 
 
 ```
 instagram/
-├── _assets/            fontes (Anton, Archivo Black, DM Mono), marca e foto da equipe
-├── _gerador/           template + ilustrações + renderizador (Playwright)
-└── 30-dias-nov-dez-2026/   lote atual: 30 posts, um por dia, de 09/11 a 08/12/2026
-    ├── posts.mjs       fonte única: título, legenda, texto alternativo (a ordem da lista = ordem de publicação)
-    ├── png/            30 artes 1080×1080
-    ├── legendas.md     gerado a partir de posts.mjs
-    └── calendario.md   gerado a partir de posts.mjs
+├── _assets/                  fontes (Anton, Archivo Black, DM Mono), marca e fotos da equipe
+├── _gerador/                 template + ilustrações + renderizador (Playwright)
+├── 30-dias-nov-dez-2026/     30 posts, um por dia, de 09/11 a 08/12/2026 (1080×1080)
+├── linha-empresa-angulos/    7 posts dos ângulos da Linha Empresa (1080×1080), cada um com condição para publicar
+├── stories/                  7 modelos de story (1080×1920) com roteiro de uso
+└── destaques/                10 capas de destaque (1080×1920)
 ```
+
+Em cada lote: `posts.mjs` é a fonte única (títulos, legendas, texto alternativo), `png/` guarda as artes e
+`legendas.md` é gerado a partir do `posts.mjs`. Lotes com datas também geram `calendario.md`.
 
 ## Como gerar de novo
 
@@ -28,6 +30,7 @@ Depois, de dentro de `instagram/_gerador/`:
 ```bash
 node render.mjs ../30-dias-nov-dez-2026          # todos os posts (~25 s)
 node render.mjs ../30-dias-nov-dez-2026 03 07    # só o 03 e o 07
+node render.mjs ../stories                       # qualquer outro lote
 ```
 
 A ilustração de cada post é medida e encaixada sozinha embaixo do título. Só os posts de equipe
@@ -38,7 +41,13 @@ Para mudar um texto, edite `30-dias-nov-dez-2026/posts.mjs` e rode de novo.
 
 Marcação nos títulos: `[[texto]]` = bloco verde, `__texto__` = sublinhado verde.
 
-## Regras que o lote segue
+## Condição para publicar
+
+Os posts de `linha-empresa-angulos/` afirmam coisas que ainda dependem de decisão do time (contrato com
+exportação de dados, valor aprovado, programa de cliente-piloto). Cada um tem o campo `condicao` em
+`posts.mjs` e em `legendas.md`. Não publicar antes de cumprir.
+
+## Regras que os lotes seguem
 
 - Contato público é só o Instagram `@vertice.xy` (sem e-mail e sem WhatsApp da Vértice).
 - Preços e prazos são os valores iniciais/de referência do catálogo, nunca preço final.

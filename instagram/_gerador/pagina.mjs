@@ -40,11 +40,18 @@ function presets(nome) {
 }
 
 function fundo(post) {
+  const H = post.H || 1080;
   const R = rng(post.seed * 977 + 13);
   const p = presets(post.preset || 'A');
+  const k = H / 1080;
+  if (k !== 1) {
+    const sy = (arr, idx) => arr.map((r) => r.map((v, i) => (idx.includes(i) ? v * k : v)));
+    p.blobs = sy(p.blobs, [1]); p.verdes = sy(p.verdes, [1]); p.globos = sy(p.globos, [1]);
+    p.meios = sy(p.meios, [1]); p.faixas = sy(p.faixas, [1, 3]); p.miras = sy(p.miras, [1]); p.fitas = sy(p.fitas, [1]);
+  }
   let s = '';
-  s += `<rect width="1080" height="1080" fill="${C.paper}"/>`;
-  s += `<g filter="url(#rough)"><rect x="28" y="28" width="1024" height="1024" fill="${C.ink}"/></g>`;
+  s += `<rect width="1080" height="${H}" fill="${C.paper}"/>`;
+  s += `<g filter="url(#rough)"><rect x="28" y="28" width="1024" height="${H - 56}" fill="${C.ink}"/></g>`;
   for (const [x1, y1, x2, y2, t] of p.faixas) {
     s += `<g filter="url(#rough)"><path d="${tornBand(x1, y1, x2, y2, t + 16, R)}" fill="${C.paper}"/></g>`;
     s += `<g filter="url(#rough)"><path d="${tornBand(x1, y1, x2, y2, t - 6, R)}" fill="#1b1b1b"/></g>`;
@@ -65,14 +72,14 @@ function fundo(post) {
   return { svg: s, fitas: p.fitas, R };
 }
 
-function poeira(R) {
+function poeira(R, H = 1080) {
   let s = '';
   for (let i = 0; i < 160; i++) {
-    const x = (R() * 1080).toFixed(0), y = (R() * 1080).toFixed(0), r = (0.6 + R() * 1.8).toFixed(1);
+    const x = (R() * 1080).toFixed(0), y = (R() * H).toFixed(0), r = (0.6 + R() * 1.8).toFixed(1);
     s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${R() > 0.5 ? C.paper : C.ink}" opacity="${(0.25 + R() * 0.5).toFixed(2)}"/>`;
   }
   for (let i = 0; i < 3; i++) {
-    const x = R() * 1080, y = R() * 1080, l = 30 + R() * 110, a = R() * 3.14;
+    const x = R() * 1080, y = R() * H, l = 30 + R() * 110, a = R() * 3.14;
     s += `<line x1="${x.toFixed(0)}" y1="${y.toFixed(0)}" x2="${(x + Math.cos(a) * l).toFixed(0)}" y2="${(y + Math.sin(a) * l).toFixed(0)}" stroke="${C.paper}" stroke-width="1.2" opacity=".2"/>`;
   }
   return s;
@@ -110,6 +117,7 @@ function marcaBloco(post, assetDir) {
 }
 
 export function paginaHTML(post, { fontDir, assetDir }) {
+  const H = post.H || 1080;
   const f = (n) => pathToFileURL(`${fontDir}/${n}`).href;
   const bg = fundo(post);
   const marcaUrl = pathToFileURL(`${assetDir}/marca/vertice-mark.png`).href;
@@ -128,10 +136,10 @@ const linhasHTML = post.lines.map((l, i) => {
 @font-face{font-family:'DM Mono';font-weight:400;src:url(${f('DMMono-Regular.ttf')})}
 @font-face{font-family:'DM Mono';font-weight:500;src:url(${f('DMMono-Medium.ttf')})}
 html,body{margin:0;background:#000}
-#c{position:relative;width:1080px;height:1080px;overflow:hidden}
+#c{position:relative;width:1080px;height:${H}px;overflow:hidden}
 svg.l{position:absolute;left:0;top:0}
-.tag{position:absolute;left:72px;top:54px;text-shadow:0 0 8px #080808,0 0 3px #080808;font:500 28px 'DM Mono';letter-spacing:.14em;color:${C.paper};text-transform:uppercase;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:11px;filter:url(#xerox)}
-.foot{position:absolute;right:62px;bottom:42px;background:#080808;padding:8px 10px 14px 14px;font:500 26px 'DM Mono';letter-spacing:.22em;color:${C.paper};text-transform:uppercase;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:11px;filter:url(#xerox)}
+.tag{position:absolute;left:72px;top:${post.tagTop ?? 54}px;text-shadow:0 0 8px #080808,0 0 3px #080808;font:500 28px 'DM Mono';letter-spacing:.14em;color:${C.paper};text-transform:uppercase;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:11px;filter:url(#xerox)}
+.foot{position:absolute;right:62px;bottom:${post.footBottom ?? 42}px;background:#080808;padding:8px 10px 14px 14px;font:500 26px 'DM Mono';letter-spacing:.22em;color:${C.paper};text-transform:uppercase;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:11px;filter:url(#xerox)}
 #head{position:absolute;left:${post.headX ?? 70}px;top:${post.headY ?? 112}px;filter:url(#xerox);transform:rotate(${post.headRot ?? -1}deg);transform-origin:0 0}
 .ln{position:relative;font-family:Anton;text-transform:uppercase;color:${C.paper};white-space:nowrap;line-height:1.02;letter-spacing:-.004em;width:max-content}
 .hl{background:${C.acid};color:${C.ink};padding:0 .09em;display:inline-block;transform:rotate(-1.4deg);box-shadow:.05em .05em 0 rgba(8,8,8,.5)}
@@ -140,19 +148,19 @@ svg.l{position:absolute;left:0;top:0}
 .ul::after{content:'';position:absolute;left:-1.5%;right:-3%;bottom:.02em;height:.085em;background:${C.acid};transform:rotate(-.7deg);border-radius:3px}
 .sub{position:absolute;font:500 26px 'DM Mono';letter-spacing:.1em;color:${C.paper};text-transform:uppercase;filter:url(#xerox)}
 </style></head><body><div id="c">
-<svg class="l" width="1080" height="1080" viewBox="0 0 1080 1080">${defs(post.seed)}${bg.svg}</svg>
-<svg class="l" width="1080" height="1080" viewBox="0 0 1080 1080">
+<svg class="l" width="1080" height="${H}" viewBox="0 0 1080 ${H}">${defs(post.seed, H)}${bg.svg}</svg>
+<svg class="l" width="1080" height="${H}" viewBox="0 0 1080 ${H}">
   <g filter="url(#xerox)">${fotoBloco(post, assetDir)}</g>
   <g filter="url(#xerox)">${marcaBloco(post, assetDir)}</g>
   <g id="illo" ${fixa ? `transform="translate(${ix} ${iy}) scale(${is})"` : ''} filter="url(#xerox)">${illo}</g>
   ${fitas}
 </svg>
-<div class="tag">${post.tag}</div>
+${post.semRotulo ? '' : `<div class="tag">${post.tag}</div>`}
 <div id="head">${linhasHTML}</div>
-<div class="foot">VÉRTICE DIGITAL</div>
-<svg class="l" width="1080" height="1080" viewBox="0 0 1080 1080" style="pointer-events:none">
-  <rect width="1080" height="1080" filter="url(#grao)" style="mix-blend-mode:overlay" opacity=".26"/>
-  <g filter="url(#xerox)">${poeira(bg.R)}</g>
+${post.semRotulo ? '' : '<div class="foot">VÉRTICE DIGITAL</div>'}
+<svg class="l" width="1080" height="${H}" viewBox="0 0 1080 ${H}" style="pointer-events:none">
+  <rect width="1080" height="${H}" filter="url(#grao)" style="mix-blend-mode:overlay" opacity=".26"/>
+  <g filter="url(#xerox)">${poeira(bg.R, H)}</g>
 </svg>
 </div>
 <script>
@@ -165,12 +173,14 @@ svg.l{position:absolute;left:0;top:0}
   const head=document.getElementById('head');
   let h=head.getBoundingClientRect().height;
   if(h>HMAX){const k=HMAX/h; lns.forEach(l=>l.style.fontSize=(parseFloat(l.style.fontSize)*k)+'px');}
+  if(${post.centro ? 'true' : 'false'}){head.style.left=((1080-head.getBoundingClientRect().width)/2)+'px';}
   const il=document.getElementById('illo');
   if(il && ${post.illoPos ? 'false' : 'true'}){
-    const bb=il.getBBox(); const top=head.getBoundingClientRect().bottom+30; const availH=974-top;
-    const k=Math.min(${post.illoMax ?? 1.12}, 960/bb.width, availH/bb.height);
-    const x=60+(960-bb.width*k)/2-bb.x*k;
-    const y=top+Math.min(36,(availH-bb.height*k)/2)-bb.y*k;
+    const BOX=${JSON.stringify(post.illoBox || null)}; const bb=il.getBBox();
+    const top=BOX?BOX[1]:head.getBoundingClientRect().bottom+30; const availH=BOX?BOX[3]:${H - 106}-top; const availW=BOX?BOX[2]:960; const left=BOX?BOX[0]:60;
+    const k=Math.min(${post.illoMax ?? 1.12}, availW/bb.width, availH/bb.height);
+    const x=left+(availW-bb.width*k)/2-bb.x*k;
+    const y=top+(BOX?(availH-bb.height*k)/2:Math.min(36,(availH-bb.height*k)/2))-bb.y*k;
     il.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') scale('+k.toFixed(3)+')');
     window.__illo={k:k,w:bb.width*k,h:bb.height*k,y:y+bb.y*k};
   }

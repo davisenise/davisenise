@@ -95,15 +95,15 @@ export function halftone(x, y, w, h, rot = 0, cor = C.paper, fade = 'r') {
 }
 
 // Filtros compartilhados. "seed" muda a textura de cada post.
-export function defs(seed) {
+export function defs(seed, H = 1080) {
   return `<defs>
-  <filter id="rough" filterUnits="userSpaceOnUse" x="-80" y="-80" width="1240" height="1240">
+  <filter id="rough" filterUnits="userSpaceOnUse" x="-80" y="-80" width="1240" height="${H + 160}">
     <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="3" seed="${seed}" result="n"/>
     <feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G" result="d"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.14" numOctaves="2" seed="${seed + 3}" result="n2"/>
     <feDisplacementMap in="d" in2="n2" scale="8" xChannelSelector="G" yChannelSelector="R"/>
   </filter>
-  <filter id="ink" filterUnits="userSpaceOnUse" x="-80" y="-80" width="1240" height="1240">
+  <filter id="ink" filterUnits="userSpaceOnUse" x="-80" y="-80" width="1240" height="${H + 160}">
     <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="${seed + 5}" result="n"/>
     <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="${seed + 9}" result="g"/>

@@ -29,6 +29,7 @@ const page = await browser.newPage({ viewport: { width: 1080, height: 1080 }, de
 for (const p of posts) {
   if (filtro.length && !filtro.includes(p.n)) continue;
   const html = join(tmp, `${p.n}.html`);
+  await page.setViewportSize({ width: 1080, height: p.H || 1080 });
   writeFileSync(html, paginaHTML(p, { fontDir, assetDir }));
   await page.goto(pathToFileURL(html).href);
   await page.waitForFunction('window.__pronto === true');
@@ -45,11 +46,12 @@ await browser.close();
 const dias = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 let leg = `# Legendas — ${lote.split('/').pop()}\n\n> Gerado por \`_gerador/render.mjs\` a partir de \`posts.mjs\`. Edite lá, não aqui.\n> Texto alternativo (acessibilidade) vem logo abaixo de cada legenda.\n\n`;
 let cal = `# Calendário sugerido\n\n> **Datas são sugestões.** Nada foi publicado nem agendado. Confirme oferta, data e tom antes de postar.\n\n| Post | Data sugerida | Tema | Arquivo |\n|---|---|---|---|\n`;
+const temData = posts.some((p) => p.data);
 for (const p of posts) {
-  const d = new Date(p.data + 'T12:00:00');
-  leg += `## ${p.n} — ${p.tema}\n\n${p.legenda}\n\n${hashtags}\n\n**Texto alternativo:** ${p.alt}\n\n---\n\n`;
-  cal += `| ${p.n} | ${dias[d.getDay()]} ${p.data.split('-').reverse().join('/')} | ${p.tema} | \`png/${p.n}-${p.slug}.png\` |\n`;
+  const d = p.data ? new Date(p.data + 'T12:00:00') : null;
+  leg += `## ${p.n} — ${p.tema}\n\n${p.legenda}\n\n${hashtags ? hashtags + '\n\n' : ''}${p.condicao ? '**Condição para publicar:** ' + p.condicao + '\n\n' : ''}**Texto alternativo:** ${p.alt}\n\n---\n\n`;
+  if (d) cal += `| ${p.n} | ${dias[d.getDay()]} ${p.data.split('-').reverse().join('/')} | ${p.tema} | \`png/${p.n}-${p.slug}.png\` |\n`;
 }
 writeFileSync(join(lote, 'legendas.md'), leg);
-writeFileSync(join(lote, 'calendario.md'), cal);
+if (temData) writeFileSync(join(lote, 'calendario.md'), cal);
 console.log('legendas.md e calendario.md atualizados');
