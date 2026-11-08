@@ -2,6 +2,9 @@
 import { pathToFileURL } from 'node:url';
 import { C, rng, blobPath, tornBand, globe, mira, cruz, fita, halftone, defs } from './estilo.mjs';
 import { ilustracoes } from './ilustracoes.mjs';
+import { extras } from './ilustracoes-extra.mjs';
+
+const TODAS = { ...ilustracoes, ...extras };
 
 const espelha = (x, m) => (m ? 1080 - x : x);
 
@@ -9,7 +12,7 @@ function presets(nome) {
   if (nome === 'A') return {
     blobs: [[820, 110, 190], [70, 1010, 150]],
     verdes: [[985, 520, 110, 150, -4], [150, 905, 120, 120, 3]],
-    globos: [[1035, 150, 150, 10], [60, 1045, 165, -15]],
+    globos: [[1062, 112, 120, 10], [60, 1045, 165, -15]],
     meios: [[20, 860, 140, 160, 0], [1000, 600, 90, 130, 0]],
     faixas: [[150, 1052, 660, 1004, 70]],
     miras: [[978, 104], [1012, 470], [84, 748], [330, 1012]],
@@ -28,7 +31,7 @@ function presets(nome) {
   return {
     blobs: [[260, 90, 170], [1010, 990, 150]],
     verdes: [[95, 560, 110, 150, 4], [900, 880, 120, 120, -3]],
-    globos: [[1050, 120, 130, 10], [40, 1050, 170, -14]],
+    globos: [[1066, 100, 115, 10], [40, 1050, 170, -14]],
     meios: [[930, 850, 140, 160, 0], [30, 620, 90, 130, 0]],
     faixas: [[-30, 940, 600, 1070, 90]],
     miras: [[980, 470], [70, 520], [1000, 770], [740, 1010]],
@@ -78,7 +81,7 @@ function poeira(R) {
 // [[destaque]] = bloco verde; __sublinhado__ = traço verde embaixo
 function marcaLinha(t) {
   return t
-    .replace(/\[\[(.+?)\]\]/g, '<span class="hl">$1</span>')
+    .replace(/\[\[(.+?)\]\]/g, (_, x) => `<span class="hl${/[ÁÀÂÃÉÊÍÓÔÕÚ]/.test(x) ? ' acc' : ''}">${x}</span>`)
     .replace(/__(.+?)__/g, '<span class="ul">$1</span>');
 }
 
@@ -109,8 +112,10 @@ function marcaBloco(post, assetDir) {
 export function paginaHTML(post, { fontDir, assetDir }) {
   const f = (n) => pathToFileURL(`${fontDir}/${n}`).href;
   const bg = fundo(post);
-  const illo = ilustracoes[post.illo] ? ilustracoes[post.illo]() : '';
-  const [ix, iy, is = 1] = post.illoPos || [60, 700, 1];
+  const marcaUrl = pathToFileURL(`${assetDir}/marca/vertice-mark.png`).href;
+  const illo = (TODAS[post.illo] ? TODAS[post.illo]() : '').replaceAll('{{MARCA}}', marcaUrl);
+  const fixa = Array.isArray(post.illoPos);
+  const [ix, iy, is = 1] = post.illoPos || [0, 0, 1];
   const fitas = bg.fitas.map(([x, y, w, h, r]) => fita(x, y, w, h, r)).join('');
   // linha com letra acentuada (fora a primeira) ganha respiro, senão o acento invade a linha de cima
 const linhasHTML = post.lines.map((l, i) => {
@@ -130,6 +135,7 @@ svg.l{position:absolute;left:0;top:0}
 #head{position:absolute;left:${post.headX ?? 70}px;top:${post.headY ?? 112}px;filter:url(#xerox);transform:rotate(${post.headRot ?? -1}deg);transform-origin:0 0}
 .ln{position:relative;font-family:Anton;text-transform:uppercase;color:${C.paper};white-space:nowrap;line-height:1.02;letter-spacing:-.004em;width:max-content}
 .hl{background:${C.acid};color:${C.ink};padding:0 .09em;display:inline-block;transform:rotate(-1.4deg);box-shadow:.05em .05em 0 rgba(8,8,8,.5)}
+.hl.acc::before{content:'';position:absolute;left:0;right:0;top:-.19em;height:.2em;background:${C.acid};z-index:-1}
 .ul{position:relative;display:inline-block}
 .ul::after{content:'';position:absolute;left:-1.5%;right:-3%;bottom:.02em;height:.085em;background:${C.acid};transform:rotate(-.7deg);border-radius:3px}
 .sub{position:absolute;font:500 26px 'DM Mono';letter-spacing:.1em;color:${C.paper};text-transform:uppercase;filter:url(#xerox)}
@@ -138,7 +144,7 @@ svg.l{position:absolute;left:0;top:0}
 <svg class="l" width="1080" height="1080" viewBox="0 0 1080 1080">
   <g filter="url(#xerox)">${fotoBloco(post, assetDir)}</g>
   <g filter="url(#xerox)">${marcaBloco(post, assetDir)}</g>
-  <g transform="translate(${ix} ${iy}) scale(${is})" filter="url(#xerox)">${illo}</g>
+  <g id="illo" ${fixa ? `transform="translate(${ix} ${iy}) scale(${is})"` : ''} filter="url(#xerox)">${illo}</g>
   ${fitas}
 </svg>
 <div class="tag">${post.tag}</div>
@@ -159,7 +165,16 @@ svg.l{position:absolute;left:0;top:0}
   const head=document.getElementById('head');
   let h=head.getBoundingClientRect().height;
   if(h>HMAX){const k=HMAX/h; lns.forEach(l=>l.style.fontSize=(parseFloat(l.style.fontSize)*k)+'px');}
-  window.__info={bottom:head.getBoundingClientRect().bottom,right:Math.max(...lns.map(l=>l.getBoundingClientRect().right))};
+  const il=document.getElementById('illo');
+  if(il && ${post.illoPos ? 'false' : 'true'}){
+    const bb=il.getBBox(); const top=head.getBoundingClientRect().bottom+30; const availH=974-top;
+    const k=Math.min(${post.illoMax ?? 1.12}, 960/bb.width, availH/bb.height);
+    const x=60+(960-bb.width*k)/2-bb.x*k;
+    const y=top+Math.min(36,(availH-bb.height*k)/2)-bb.y*k;
+    il.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') scale('+k.toFixed(3)+')');
+    window.__illo={k:k,w:bb.width*k,h:bb.height*k,y:y+bb.y*k};
+  }
+  window.__info={illo:window.__illo||null,bottom:head.getBoundingClientRect().bottom,right:Math.max(...lns.map(l=>l.getBoundingClientRect().right))};
   window.__pronto=true;
 })();
 </script></body></html>`;

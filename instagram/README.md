@@ -7,9 +7,9 @@ Artes do Instagram `@vertice.xy`, geradas por código no estilo cartaz xerox da 
 instagram/
 ├── _assets/            fontes (Anton, Archivo Black, DM Mono), marca e foto da equipe
 ├── _gerador/           template + ilustrações + renderizador (Playwright)
-└── novembro-2026/      lote atual
-    ├── posts.mjs       fonte única: título, legenda, texto alternativo, data sugerida
-    ├── png/            artes 1080×1080
+└── 30-dias-nov-dez-2026/   lote atual: 30 posts, um por dia, de 09/11 a 08/12/2026
+    ├── posts.mjs       fonte única: título, legenda, texto alternativo (a ordem da lista = ordem de publicação)
+    ├── png/            30 artes 1080×1080
     ├── legendas.md     gerado a partir de posts.mjs
     └── calendario.md   gerado a partir de posts.mjs
 ```
@@ -26,11 +26,14 @@ npx playwright install chromium
 Depois, de dentro de `instagram/_gerador/`:
 
 ```bash
-node render.mjs ../novembro-2026          # todos os posts
-node render.mjs ../novembro-2026 03 07    # só o 03 e o 07
+node render.mjs ../30-dias-nov-dez-2026          # todos os posts (~25 s)
+node render.mjs ../30-dias-nov-dez-2026 03 07    # só o 03 e o 07
 ```
 
-Para mudar um texto, edite `novembro-2026/posts.mjs` e rode de novo.
+A ilustração de cada post é medida e encaixada sozinha embaixo do título. Só os posts de equipe
+(com foto) usam posição fixa (`illoPos`).
+
+Para mudar um texto, edite `30-dias-nov-dez-2026/posts.mjs` e rode de novo.
 `legendas.md` e `calendario.md` são sobrescritos a cada rodada, então não edite eles à mão.
 
 Marcação nos títulos: `[[texto]]` = bloco verde, `__texto__` = sublinhado verde.
@@ -45,6 +48,9 @@ Marcação nos títulos: `[[texto]]` = bloco verde, `__texto__` = sublinhado ver
 
 ## Pendências
 
-- Post 06 usa a foto do Davi que já está no site. Os próximos da série (Leonardo e Douglas)
-  precisam de foto autorizada e do papel correto de cada um.
+- Posts 12, 18 e 25 (Davi, Douglas, Leonardo) usam as fotos que já estão no site. Confirmar com cada
+  um se podem ir pro Instagram antes de publicar.
+- Post 08 cita a Black Friday em 27/11: se a data mudar, ajustar texto e posição no calendário.
+- Post 19 é uma demonstração **fictícia** (barbearia exemplo); os selos "conceito fictício" e
+  "não é cliente real" não devem ser removidos.
 - Confirmar oferta e datas antes de publicar.

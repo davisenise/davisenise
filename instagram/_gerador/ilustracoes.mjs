@@ -5,33 +5,33 @@ const K = C.ink, P = C.paper, G = C.acid, B = C.blue;
 const GR = '#9a9a93', LG = '#d6d4ca';
 const SW = 5;
 
-const janela = (x, y, w, h, inner = '', { barra = 40 } = {}) => `<g transform="translate(${x} ${y})">
+export const janela = (x, y, w, h, inner = '', { barra = 40, pontos = true } = {}) => `<g transform="translate(${x} ${y})">
   <rect x="12" y="12" width="${w}" height="${h}" rx="12" fill="url(#dots)"/>
   <rect width="${w}" height="${h}" rx="12" fill="${P}" stroke="${K}" stroke-width="${SW}"/>
   <path d="M0 ${barra}V12a12 12 0 0 1 12-12H${w - 12}a12 12 0 0 1 12 12V${barra}Z" fill="${K}"/>
-  <circle cx="26" cy="${barra / 2}" r="6" fill="${P}"/><circle cx="48" cy="${barra / 2}" r="6" fill="${P}"/><circle cx="70" cy="${barra / 2}" r="6" fill="${P}"/>
+  ${pontos ? `<circle cx="26" cy="${barra / 2}" r="6" fill="${P}"/><circle cx="48" cy="${barra / 2}" r="6" fill="${P}"/><circle cx="70" cy="${barra / 2}" r="6" fill="${P}"/>` : ''}
   ${inner}</g>`;
 
-const linhas = (x, y, w, n, gap = 18, h = 9, cor = GR) =>
+export const linhas = (x, y, w, n, gap = 18, h = 9, cor = GR) =>
   Array.from({ length: n }, (_, i) =>
     `<rect x="${x}" y="${y + i * gap}" width="${i === n - 1 ? w * 0.6 : w}" height="${h}" rx="3" fill="${cor}"/>`).join('');
 
-const barras = (x, y, w, h, vals, cor = K, destaque = -1) => {
+export const barras = (x, y, w, h, vals, cor = K, destaque = -1) => {
   const gap = w / vals.length, bw = gap * 0.62;
   return vals.map((v, i) =>
     `<rect x="${x + i * gap}" y="${y + h - v * h}" width="${bw}" height="${v * h}" fill="${i === destaque ? G : cor}" ${i === destaque ? `stroke="${K}" stroke-width="3"` : ''}/>`).join('');
 };
 
-const visto = (x, y, s = 1, cor = K, sw = 7) =>
+export const visto = (x, y, s = 1, cor = K, sw = 7) =>
   `<path d="M${x} ${y} l${10 * s} ${11 * s} l${20 * s} ${-24 * s}" fill="none" stroke="${cor}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-const ponta = (x, y, ang, s = 22, cor = G, sw = 8) =>
+export const ponta = (x, y, ang, s = 22, cor = G, sw = 8) =>
   `<g transform="translate(${x} ${y}) rotate(${ang})"><path d="M${-s} ${-s * 0.75}L0 0L${-s} ${s * 0.75}" fill="none" stroke="${cor}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
 
-const seta = (d, x, y, ang, cor = G) =>
+export const seta = (d, x, y, ang, cor = G) =>
   `<path d="${d}" fill="none" stroke="${cor}" stroke-width="8" stroke-linecap="round"/>${ponta(x, y, ang, 22, cor)}`;
 
-const balao = (x, y, w, h, inner = '', { cor = P, cauda = 'l' } = {}) => {
+export const balao = (x, y, w, h, inner = '', { cor = P, cauda = 'l' } = {}) => {
   const bx = cauda === 'l' ? 34 : w - 74;
   const tip = cauda === 'l' ? 26 : w - 28;
   return `<g transform="translate(${x} ${y})">
@@ -41,33 +41,33 @@ const balao = (x, y, w, h, inner = '', { cor = P, cauda = 'l' } = {}) => {
   ${inner}</g>`;
 };
 
-const lampada = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
+export const lampada = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
   <path d="M0-34a30 30 0 0 1 21 51c-6 6-8 12-8 19h-26c0-7-2-13-8-19A30 30 0 0 1 0-34Z" fill="${P}" stroke="${K}" stroke-width="5"/>
   <rect x="-13" y="38" width="26" height="9" fill="${K}"/>
   <path d="M-10-6 0 10 10-6" fill="none" stroke="${K}" stroke-width="5" stroke-linejoin="round"/></g>`;
 
-const engrenagem = (x, y, r, cor = P) => {
+export const engrenagem = (x, y, r, cor = P) => {
   let t = '';
   for (let i = 0; i < 8; i++)
     t += `<rect x="${-r * 0.17}" y="${-r}" width="${r * 0.34}" height="${r * 0.5}" transform="rotate(${i * 45})" fill="${cor}" stroke="${K}" stroke-width="4"/>`;
   return `<g transform="translate(${x} ${y})">${t}<circle r="${r * 0.78}" fill="${cor}" stroke="${K}" stroke-width="4"/><circle r="${r * 0.3}" fill="${K}"/></g>`;
 };
 
-const cursor = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
+export const cursor = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
   <polygon points="0,0 0,52 14,40 24,62 36,57 26,36 44,36" fill="${P}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/>
   <g stroke="${P}" stroke-width="5" stroke-linecap="round"><line x1="-18" y1="14" x2="-34" y2="8"/><line x1="-6" y1="-8" x2="-14" y2="-22"/><line x1="16" y1="-10" x2="18" y2="-26"/></g></g>`;
 
-const lupa = (x, y, r) => `<g transform="translate(${x} ${y})">
+export const lupa = (x, y, r) => `<g transform="translate(${x} ${y})">
   <line x1="${r * 0.72}" y1="${r * 0.72}" x2="${r * 1.75}" y2="${r * 1.75}" stroke="${K}" stroke-width="${r * 0.4}" stroke-linecap="round"/>
   <line x1="${r * 0.72}" y1="${r * 0.72}" x2="${r * 1.75}" y2="${r * 1.75}" stroke="${P}" stroke-width="${r * 0.26}" stroke-linecap="round"/>
   <circle r="${r}" fill="rgba(167,255,0,.2)" stroke="${K}" stroke-width="${r * 0.3}"/>
   <circle r="${r}" fill="none" stroke="${P}" stroke-width="${r * 0.17}"/></g>`;
 
-const alerta = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
+export const alerta = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})">
   <path d="M0-40 44 34H-44Z" fill="${G}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/>
   <rect x="-4" y="-14" width="8" height="28" fill="${K}"/><circle cy="24" r="5" fill="${K}"/></g>`;
 
-const selo = (x, y, pequeno, grande, { rot = -4, tam = 110, cor = G } = {}) => {
+export const selo = (x, y, pequeno, grande, { rot = -4, tam = 110, cor = G } = {}) => {
   const bw = grande.length * tam * 0.47;
   const w = Math.max(bw, pequeno.length * 15) + 52;
   const h = tam + 62;
@@ -78,7 +78,7 @@ const selo = (x, y, pequeno, grande, { rot = -4, tam = 110, cor = G } = {}) => {
     <text x="26" y="${h - 22}" font-family="Anton" font-size="${tam}" fill="${K}" textLength="${w - 52}" lengthAdjust="spacingAndGlyphs">${grande}</text></g>`;
 };
 
-const pilula = (x, y, txt, { cor = P, tx = K, size = 24 } = {}) => {
+export const pilula = (x, y, txt, { cor = P, tx = K, size = 24 } = {}) => {
   const w = txt.length * (size * 0.6 + 2.4) + 40;
   return `<g transform="translate(${x} ${y})"><rect x="6" y="6" width="${w}" height="46" fill="url(#dots)"/><rect width="${w}" height="46" fill="${cor}" stroke="${K}" stroke-width="4"/>
   <text x="18" y="31" font-family="DM Mono" font-weight="500" font-size="${size}" letter-spacing="2" fill="${tx}">${txt}</text></g>`;

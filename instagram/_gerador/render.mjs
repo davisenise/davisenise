@@ -1,9 +1,9 @@
 // Uso: node render.mjs <pasta-do-lote> [numero ...]
-//   ex: node render.mjs ../novembro-2026          -> todos os posts
-//       node render.mjs ../novembro-2026 01 04    -> só 01 e 04
+//   ex: node render.mjs ../30-dias-nov-dez-2026          -> todos os posts
+//       node render.mjs ../30-dias-nov-dez-2026 01 04    -> só 01 e 04
 // Requer: npm i playwright (o Chromium vem junto: npx playwright install chromium)
 import { createRequire } from 'node:module';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { paginaHTML } from './pagina.mjs';
@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
 const aqui = dirname(fileURLToPath(import.meta.url));
-const lote = resolve(process.argv[2] || join(aqui, '../novembro-2026'));
+const lote = resolve(process.argv[2] || join(aqui, '../30-dias-nov-dez-2026'));
 const filtro = process.argv.slice(3);
 const { posts, hashtags } = await import(pathToFileURL(join(lote, 'posts.mjs')).href);
 
@@ -21,6 +21,7 @@ const assetDir = join(aqui, '../_assets');
 const tmp = join(aqui, '.tmp');
 const png = join(lote, 'png');
 mkdirSync(tmp, { recursive: true });
+if (!filtro.length) rmSync(png, { recursive: true, force: true });
 mkdirSync(png, { recursive: true });
 
 const browser = await chromium.launch();
@@ -35,7 +36,8 @@ for (const p of posts) {
   const out = join(png, `${p.n}-${p.slug}.png`);
   await page.locator('#c').screenshot({ path: out });
   const info = await page.evaluate('window.__info');
-  console.log(`${p.n} ${p.slug}  título termina em y=${Math.round(info.bottom)}, x=${Math.round(info.right)}`);
+  const il = info.illo ? `ilustração k=${info.illo.k.toFixed(2)} y=${Math.round(info.illo.y)}..${Math.round(info.illo.y + info.illo.h)}` : 'ilustração fixa';
+  console.log(`${p.n} ${p.slug.padEnd(22)} título até y=${Math.round(info.bottom)}  ${il}`);
 }
 await browser.close();
 
@@ -45,8 +47,8 @@ let leg = `# Legendas — ${lote.split('/').pop()}\n\n> Gerado por \`_gerador/re
 let cal = `# Calendário sugerido\n\n> **Datas são sugestões.** Nada foi publicado nem agendado. Confirme oferta, data e tom antes de postar.\n\n| Post | Data sugerida | Tema | Arquivo |\n|---|---|---|---|\n`;
 for (const p of posts) {
   const d = new Date(p.data + 'T12:00:00');
-  leg += `## ${p.n} — ${p.tag.replace(/^\d+ \/ /, '')}\n\n${p.legenda}\n\n${hashtags}\n\n**Texto alternativo:** ${p.alt}\n\n---\n\n`;
-  cal += `| ${p.n} | ${dias[d.getDay()]} ${p.data.split('-').reverse().join('/')} | ${p.tag.replace(/^\d+ \/ /, '')} | \`png/${p.n}-${p.slug}.png\` |\n`;
+  leg += `## ${p.n} — ${p.tema}\n\n${p.legenda}\n\n${hashtags}\n\n**Texto alternativo:** ${p.alt}\n\n---\n\n`;
+  cal += `| ${p.n} | ${dias[d.getDay()]} ${p.data.split('-').reverse().join('/')} | ${p.tema} | \`png/${p.n}-${p.slug}.png\` |\n`;
 }
 writeFileSync(join(lote, 'legendas.md'), leg);
 writeFileSync(join(lote, 'calendario.md'), cal);
