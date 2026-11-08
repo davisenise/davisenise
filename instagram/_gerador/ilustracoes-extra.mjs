@@ -325,4 +325,27 @@ export const extras = {
   capaBastidor: () => `<rect x="14" y="54" width="430" height="270" rx="26" fill="url(#dots)"/><rect y="40" width="430" height="270" rx="26" fill="${P}" stroke="${K}" stroke-width="7"/>
     <rect x="30" y="0" width="120" height="44" rx="8" fill="${K}"/><circle cx="215" cy="175" r="92" fill="${K}"/><polygon points="188,128 188,222 262,175" fill="${G}"/>`,
   capaVisto: () => `<rect x="14" y="14" width="380" height="380" fill="url(#dots)"/><rect width="380" height="380" fill="${G}" stroke="${K}" stroke-width="8"/>${visto(86, 210, 7, K, 30)}`,
+
+  // ───── Carrossel: como pedir um orçamento ─────
+  passo1: () => balao(0, 0, 660, 140, t(30, 58, 'OI! PRECISO ORGANIZAR', { size: 32 }) + t(30, 104, 'MEU ESTOQUE.', { size: 32 }), { cauda: 'l' })
+    + balao(300, 210, 580, 130, anton(30, 92, '@VERTICE.XY', 64), { cor: G, cauda: 'r' }),
+
+  triagem: () => ['COMO RESOLVE HOJE?', 'QUANTAS PESSOAS USAM?', 'O QUE ACONTECE SE ERRA?', 'JÁ TENTOU ALGO PRONTO?', 'QUEM DECIDE?']
+    .map((s, i) => `<g transform="translate(0 ${i * 64})"><circle cx="23" cy="23" r="23" fill="${G}" stroke="${K}" stroke-width="4"/>${anton(23, 36, String(i + 1), 30, K, 'middle')}</g>${pilula(64, i * 64, s, { size: 28 })}`).join(''),
+
+  proposta: () => `<g><rect x="14" y="14" width="440" height="340" fill="url(#dots)"/><rect width="440" height="340" fill="${P}" stroke="${K}" stroke-width="6"/>
+    ${anton(28, 76, 'PROPOSTA', 56)}${linhas(28, 110, 380, 5, 28, 11)}
+    <g transform="translate(28 268)"><rect width="52" height="52" fill="${G}" stroke="${K}" stroke-width="4"/>${visto(11, 28, 1, K, 7)}</g>${t(98, 302, 'ESCOPO, PRAZO E VALOR', { size: 22 })}</g>`
+    + selo(510, 20, 'VÁLIDA POR', '10 DIAS', { rot: -3, tam: 96 }) + pilula(510, 270, '2 PÁGINAS', { cor: G, size: 28 }),
+
+  resumoPassos: () => ['CHAMA NO DIRECT', 'CONTA O QUE PRECISA', 'RECEBE O VALOR INICIAL', 'APROVA A PROPOSTA']
+    .map((s, i) => `<g transform="translate(0 ${i * 92})"><circle cx="40" cy="40" r="38" fill="${G}" stroke="${K}" stroke-width="5"/>${anton(40, 58, String(i + 1), 50, K, 'middle')}</g>${pilula(100, i * 92 + 6, s, { size: 34 })}`).join(''),
+
+  // ───── Carrossel: mito ou verdade ─────
+  carimboMito: () => `<g transform="rotate(-6 280 100)"><rect x="12" y="12" width="560" height="200" fill="url(#dots)"/><rect width="560" height="200" fill="${P}" stroke="${K}" stroke-width="8"/>${anton(280, 160, 'MITO', 170, K, 'middle')}</g>`,
+  carimboVerdade: () => `<g transform="rotate(4 340 100)"><rect x="12" y="12" width="680" height="200" fill="url(#dots)"/><rect width="680" height="200" fill="${G}" stroke="${K}" stroke-width="8"/>${anton(340, 160, 'VERDADE', 170, K, 'middle')}</g>`,
+  carimbos: () => `<g transform="translate(0 0) rotate(-6 280 100)"><rect x="12" y="12" width="560" height="200" fill="url(#dots)"/><rect width="560" height="200" fill="${P}" stroke="${K}" stroke-width="8"/>${anton(280, 160, 'MITO', 170, K, 'middle')}</g>
+    <g transform="translate(150 250) rotate(4 340 100)"><rect x="12" y="12" width="680" height="200" fill="url(#dots)"/><rect width="680" height="200" fill="${G}" stroke="${K}" stroke-width="8"/>${anton(340, 160, 'VERDADE', 170, K, 'middle')}</g>`,
+
+  deslize: () => pilula(0, 0, 'DESLIZA PRO LADO', { cor: G, size: 38 }) + ponta(560, 30, 0, 26, G, 10),
 };

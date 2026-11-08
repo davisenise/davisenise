@@ -49,6 +49,13 @@ function fundo(post) {
     p.blobs = sy(p.blobs, [1]); p.verdes = sy(p.verdes, [1]); p.globos = sy(p.globos, [1]);
     p.meios = sy(p.meios, [1]); p.faixas = sy(p.faixas, [1, 3]); p.miras = sy(p.miras, [1]); p.fitas = sy(p.fitas, [1]);
   }
+  // Post com texto corrido: manchas de fundo saem de baixo do texto (verde sobe pra borda, cobalto e halftone descem pro canto)
+  if (post.corpo || post.limpo) {
+    p.miras = p.miras.filter((m) => !(m[0] < 200 && m[1] > H * 0.3 && m[1] < H * 0.8));
+    p.verdes = p.verdes.filter((v) => v[0] >= 900);
+    p.blobs = p.blobs.map(([cx, cy, r]) => [cx, cy > H * 0.4 ? H - 40 : cy, r]);
+    p.meios = p.meios.map((m) => [m[0], m[1] > H * 0.4 ? H - 230 : m[1], ...m.slice(2)]);
+  }
   let s = '';
   s += `<rect width="1080" height="${H}" fill="${C.paper}"/>`;
   s += `<g filter="url(#rough)"><rect x="28" y="28" width="1024" height="${H - 56}" fill="${C.ink}"/></g>`;
@@ -146,6 +153,8 @@ svg.l{position:absolute;left:0;top:0}
 .hl.acc::before{content:'';position:absolute;left:0;right:0;top:-.19em;height:.2em;background:${C.acid};z-index:-1}
 .ul{position:relative;display:inline-block}
 .ul::after{content:'';position:absolute;left:-1.5%;right:-3%;bottom:.02em;height:.085em;background:${C.acid};transform:rotate(-.7deg);border-radius:3px}
+.corpo{position:absolute;left:${post.headX ?? 70}px;top:0;width:${post.corpoW ?? 900}px;font:500 ${post.corpoSize ?? 32}px/1.5 'DM Mono';color:${C.paper};filter:url(#xerox)}
+.corpo b{background:${C.acid};color:${C.ink};padding:0 .22em;font-weight:500}
 .sub{position:absolute;font:500 26px 'DM Mono';letter-spacing:.1em;color:${C.paper};text-transform:uppercase;filter:url(#xerox)}
 </style></head><body><div id="c">
 <svg class="l" width="1080" height="${H}" viewBox="0 0 1080 ${H}">${defs(post.seed, H)}${bg.svg}</svg>
@@ -157,6 +166,7 @@ svg.l{position:absolute;left:0;top:0}
 </svg>
 ${post.semRotulo ? '' : `<div class="tag">${post.tag}</div>`}
 <div id="head">${linhasHTML}</div>
+${post.corpo ? `<div id="corpo" class="corpo">${String(post.corpo).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')}</div>` : ''}
 ${post.semRotulo ? '' : '<div class="foot">VÉRTICE DIGITAL</div>'}
 <svg class="l" width="1080" height="${H}" viewBox="0 0 1080 ${H}" style="pointer-events:none">
   <rect width="1080" height="${H}" filter="url(#grao)" style="mix-blend-mode:overlay" opacity=".26"/>
@@ -173,18 +183,21 @@ ${post.semRotulo ? '' : '<div class="foot">VÉRTICE DIGITAL</div>'}
   const head=document.getElementById('head');
   let h=head.getBoundingClientRect().height;
   if(h>HMAX){const k=HMAX/h; lns.forEach(l=>l.style.fontSize=(parseFloat(l.style.fontSize)*k)+'px');}
+  let baseBottom=head.getBoundingClientRect().bottom;
+  const corpo=document.getElementById('corpo');
+  if(corpo){corpo.style.top=(baseBottom+34)+'px'; baseBottom=corpo.getBoundingClientRect().bottom;}
   if(${post.centro ? 'true' : 'false'}){head.style.left=((1080-head.getBoundingClientRect().width)/2)+'px';}
   const il=document.getElementById('illo');
   if(il && ${post.illoPos ? 'false' : 'true'}){
     const BOX=${JSON.stringify(post.illoBox || null)}; const bb=il.getBBox();
-    const top=BOX?BOX[1]:head.getBoundingClientRect().bottom+30; const availH=BOX?BOX[3]:${H - 106}-top; const availW=BOX?BOX[2]:960; const left=BOX?BOX[0]:60;
+    const top=BOX?BOX[1]:baseBottom+30; const availH=BOX?BOX[3]:${H - 106}-top; const availW=BOX?BOX[2]:960; const left=BOX?BOX[0]:60;
     const k=Math.min(${post.illoMax ?? 1.12}, availW/bb.width, availH/bb.height);
     const x=left+(availW-bb.width*k)/2-bb.x*k;
     const y=top+(BOX?(availH-bb.height*k)/2:Math.min(36,(availH-bb.height*k)/2))-bb.y*k;
     il.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') scale('+k.toFixed(3)+')');
     window.__illo={k:k,w:bb.width*k,h:bb.height*k,y:y+bb.y*k};
   }
-  window.__info={illo:window.__illo||null,bottom:head.getBoundingClientRect().bottom,right:Math.max(...lns.map(l=>l.getBoundingClientRect().right))};
+  window.__info={illo:window.__illo||null,bottom:baseBottom,right:Math.max(...lns.map(l=>l.getBoundingClientRect().right))};
   window.__pronto=true;
 })();
 </script></body></html>`;

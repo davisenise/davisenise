@@ -10,7 +10,8 @@ instagram/
 ├── 30-dias-nov-dez-2026/     30 posts, um por dia, de 09/11 a 08/12/2026 (1080×1080)
 ├── linha-empresa-angulos/    7 posts dos ângulos da Linha Empresa (1080×1080), cada um com condição para publicar
 ├── stories/                  7 modelos de story (1080×1920) com roteiro de uso
-└── destaques/                10 capas de destaque (1080×1920)
+├── destaques/                10 capas de destaque (1080×1920)
+└── carrosseis/               2 carrosséis, 15 slides (1080×1350): como pedir um orçamento e mito ou verdade
 ```
 
 Em cada lote: `posts.mjs` é a fonte única (títulos, legendas, texto alternativo), `png/` guarda as artes e
@@ -43,7 +44,7 @@ Marcação nos títulos: `[[texto]]` = bloco verde, `__texto__` = sublinhado ver
 
 ## Condição para publicar
 
-Os posts de `linha-empresa-angulos/` afirmam coisas que ainda dependem de decisão do time (contrato com
+Os posts de `linha-empresa-angulos/` e o slide 5 do carrossel "mito ou verdade" afirmam coisas que ainda dependem de decisão do time (contrato com
 exportação de dados, valor aprovado, programa de cliente-piloto). Cada um tem o campo `condicao` em
 `posts.mjs` e em `legendas.md`. Não publicar antes de cumprir.
 
